@@ -13,23 +13,23 @@
 <div class="fixed-header-wrapper">
     <header class="site-header">
         <div class="header-logo-left">
-            <img src="logo.png" alt="Barangay Aniog Seal">
+            <img src="logo.png" alt="Barangay Aniog Seal" loading="lazy">
         </div>
         <div class="header-center">
             <h1>USWAG SLP System</h1>
             <p>Unified System for Work and Growth</p>
         </div>
         <div class="header-logo-right">
-            <img src="SLP.png" alt="Sustainable Livelihood Program Logo">
+            <img src="SLP.png" alt="Sustainable Livelihood Program Logo" loading="lazy">
         </div>
     </header>
 
     <nav class="nav-bar">
         <a href="index.html">Home</a>
-        <a href="portfolio.html">Products</a>
-        <a href="about.html">About</a>
-        <a href="contact.html">Contact</a>
-        <a href="register.html" class="active">Register</a>
+        <a href="portfolio.html">Product Gallery</a>
+        <a href="about.html">About USWAG</a>
+        <a href="contact.html">Contact Us</a>
+        <a href="register.html" class="active">Register Now</a>
     </nav>
 </div>
 
@@ -37,11 +37,12 @@
     <h2>Create Your Account</h2>
     <p>Join the USWAG SLP Samahan ng Masisinop community to start tracking your products, recording sales, or sourcing local goods from Barangay Aniog.</p>
 
-        <div class="reg-grid">
+    <div class="reg-grid">
           
         <!-- Registration Form submitting to process_register.php -->
         <div class="card-box">
-            <form id="regForm" action="process_register.php" method="POST">
+            <!-- Added 'novalidate' to use custom warning modal for all empty fields -->
+            <form id="regForm" action="process_register.php" method="POST" novalidate>
                 <div class="form-group">
                     <label for="username">Full Name:</label>
                     <input type="text" id="username" name="username" placeholder="e.g. Juan Dela Cruz" required>
@@ -64,6 +65,7 @@
                         <input type="password" id="password-field" name="password" placeholder="Enter a strong password" required>
                         <i class="fa-solid fa-eye toggle-password-icon" id="togglePassword"></i>
                     </div>
+                    <small class="form-help-text">Must be at least 8 characters.</small>
                 </div>
                 
                 <button type="submit" id="submitBtn" class="btn-submit">
@@ -76,7 +78,7 @@
         <div class="card-box media-card">
             <h3 style="text-align: center;">Need Help Creating an Account?</h3>
             <p>Watch this 1-minute video tutorial to see how to register as a local Seller or Buyer.</p>
-            <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=600&q=80" alt="Registration Guide" style="height: 180px;">
+            <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=600&q=80" alt="Registration Guide" style="height: 180px;" loading="lazy">
         </div>
 
     </div>
@@ -100,7 +102,6 @@
 <!-- Warning/Error Pop-up Modal -->
 <div id="warningModal" class="custom-modal-overlay">
     <div class="custom-modal-box">
-        <!-- Reusing your existing pulse animation for the icon -->
         <div style="font-size: 3.5rem; color: var(--accent-color); margin-bottom: 10px; animation: pulseCheck 0.6s ease-in-out;">
             <i class="fa-solid fa-triangle-exclamation"></i>
         </div>

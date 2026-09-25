@@ -1,10 +1,5 @@
 /* =========================================================================
    USWAG SLP System - Refactored Unified Stylesheet
-   - Standard top header & bottom footer without borders
-   - Compressed center logo layout for desktop & mobile
-   - #DA9C0B pressed state & blue hover states for navigation
-   - Smooth card containers for tables, images, and videos
-   - Justified document-style paragraph alignments
    ========================================================================= */
 
 :root {
@@ -28,19 +23,16 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    min-height: 100dvh; /* Prevents address-bar scrolling flicker on mobile */
+    min-height: 100dvh;
     background-color: var(--bg-color);
     color: var(--text-color);
     line-height: 1.7;
-    padding-top: 0; /* Header is in natural document flow; no offset needed */
+    padding-top: 0;
     padding-bottom: 0;
 }
 
-/* =========================================================================
-   Standard Flow Header & Compressed Center Logo Layout (No Borders)
-   ========================================================================= */
 .fixed-header-wrapper {
-    position: relative; /* Normal document flow prevents all scroll glitches */
+    position: relative;
     width: 100%;
     z-index: 1000;
     background-color: var(--primary-color);
@@ -48,13 +40,13 @@ body {
 }
 
 .site-header {
-    max-width: 900px; /* Compressed width brings logos closer to center text */
+    max-width: 900px;
     margin: 0 auto;
     padding: 12px 20px;
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 20px; /* Brings logos tightly toward center */
+    gap: 20px;
     color: var(--bg-color);
 }
 
@@ -89,14 +81,13 @@ body {
     opacity: 0.9;
 }
 
-/* Navigation - Breathing Room for Desktop & Compressed for Mobile */
 .nav-bar {
     background-color: rgba(0, 0, 0, 0.15);
     padding: 10px 20px;
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 16px; /* Spacing for desktop navigation */
+    gap: 16px;
     flex-wrap: wrap;
 }
 
@@ -108,19 +99,16 @@ body {
     font-size: 0.95rem;
     padding: 8px 18px;
     border-radius: 6px;
-    /* Smooth transition only on colors rather than layout properties */
     transition: background-color 0.2s ease, box-shadow 0.2s ease;
     display: inline-block;
     border: none;
 }
 
-/* Hover State -> Ocean Blue */
 .nav-bar a:hover {
     background-color: var(--secondary-color);
     color: #FFFFFF;
 }
 
-/* Pressed / Active State -> #DA9C0B */
 .nav-bar a:active,
 .nav-bar a.active {
     background-color: var(--pressed-color) !important;
@@ -128,9 +116,6 @@ body {
     box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
 }
 
-/* =========================================================================
-   Relative Footer Position
-   ========================================================================= */
 footer {
     position: relative;
     width: 100%;
@@ -140,28 +125,24 @@ footer {
     text-align: center;
     line-height: 50px;
     font-weight: 600;
-    font-size: 0.88rem;
+    font-size: 0.80rem;
     border: none;
     outline: none;
     box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
-    margin-top: auto; /* Automatically aligns footer to the bottom */
+    margin-top: auto;
 }
 
 footer p {
     margin: 0;
 }
 
-/* =========================================================================
-   Content Container & Paragraph Alignment
-   ========================================================================= */
 .container {
     max-width: 950px;
     margin: 0 auto;
     padding: 25px 20px;
-    flex: 1; /* Pushes the footer cleanly to the bottom */
+    flex: 1;
 }
 
-/* Fixed alignment spacing & paragraph styling like document papers */
 .container h2 {
     color: var(--secondary-color);
     margin-bottom: 12px;
@@ -175,21 +156,18 @@ footer p {
 }
 
 .container p {
-    text-align: justify; /* Paragraph text alignment like paper documents */
+    text-align: justify;
     text-justify: inter-word;
     margin-bottom: 15px;
     font-size: 1rem;
 }
 
-/* =========================================================================
-   Cards for Tables, Images, Videos & Content (No Rough Edges)
-   ========================================================================= */
 .card-box, 
 .table-container, 
 .gallery-item, 
 .media-card {
     background-color: var(--card-bg);
-    border-radius: 12px; /* Smooth rounded corners without rough edges */
+    border-radius: 12px;
     padding: 20px;
     margin-bottom: 25px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
@@ -197,7 +175,6 @@ footer p {
     overflow: hidden;
 }
 
-/* Responsive Smooth Tables */
 .table-container {
     padding: 0;
     overflow-x: auto;
@@ -207,7 +184,7 @@ footer p {
     width: 100%;
     border-collapse: collapse;
     text-align: left;
-    border: 1px solid #CCCCCC; /* Outer border */
+    border: 1px solid #CCCCCC;
 }
 
 .feature-table th {
@@ -215,12 +192,17 @@ footer p {
     color: var(--card-bg);
     padding: 14px 18px;
     font-weight: 600;
-    border: 1px solid #CCCCCC; /* Visible header borders */
+    border: 1px solid #CCCCCC;
 }
 
 .feature-table td {
     padding: 14px 18px;
-    border: 1px solid #E0E0E0; /* Visible internal horizontal and vertical cell borders */
+    border: 1px solid #E0E0E0;
+}
+
+.feature-table td i {
+    color: var(--secondary-color); 
+    margin-right: 8px;
 }
 
 .feature-table tbody tr:last-child td {
@@ -231,7 +213,6 @@ footer p {
     background-color: rgba(244, 247, 246, 0.6);
 }
 
-/* Media Cards & Grid */
 .gallery {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
@@ -245,11 +226,10 @@ footer p {
     width: 100%;
     height: 300px;
     object-fit: cover;
-    border-radius: 8px; /* Smooth inner media edges */
+    border-radius: 8px;
     margin-bottom: 12px;
 }
 
-/* Forms & Inputs */
 .form-group {
     margin-bottom: 16px;
 }
@@ -281,6 +261,26 @@ footer p {
     background-color: #FAFAFA !important;
 }
 
+/* Form Helper Text */
+.form-help-text {
+    display: block;
+    font-size: 0.8rem;
+    color: #666666;
+    margin-top: 5px;
+}
+
+/* Error State for Textboxes & Inputs */
+.form-group input.input-error {
+    border: 2px solid var(--accent-color) !important;
+    background-color: #FFF5F5 !important;
+    outline: none;
+}
+
+.form-group input.input-error::placeholder {
+    color: #D31919;
+    opacity: 0.7;
+}
+
 .btn-submit {
     background-color: var(--secondary-color);
     color: #FFFFFF;
@@ -299,12 +299,41 @@ footer p {
 }
 
 .btn-submit:hover {
-    background-color: var(--secondary-color);
+    background-color: var(--primary-color);
 }
 
 .btn-submit:active {
     background-color: var(--pressed-color);
     transform: scale(0.99);
+}
+
+/* Inquire / Ask Seller Button Styles */
+.btn-inquire {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background-color: var(--secondary-color);
+    color: #FFFFFF;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.88rem;
+    padding: 10px 14px;
+    border-radius: 6px;
+    margin-top: 14px;
+    width: 100%;
+    box-sizing: border-box;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.btn-inquire:hover {
+    background-color: var(--primary-color);
+    color: #FFFFFF;
+}
+
+.btn-inquire:active {
+    background-color: var(--pressed-color);
+    transform: scale(0.98);
 }
 
 .reg-grid {
@@ -314,7 +343,6 @@ footer p {
     align-items: start;
 }
 
-/* Modal Popups */
 .custom-modal-overlay {
     display: none;
     position: fixed;
@@ -342,7 +370,6 @@ footer p {
     to { transform: scale(1); opacity: 1; }
 }
 
-/* FontAwesome Animated Success Badge */
 .success-icon-wrapper {
     font-size: 3.5rem;
     color: var(--primary-color);
@@ -356,9 +383,6 @@ footer p {
     100% { transform: scale(1); opacity: 1; }
 }
 
-/* =========================================================================
-   Mobile Responsiveness (Compressed Nav Spacing & Uniform Look)
-   ========================================================================= */
 @media (max-width: 768px) {
     body {
         padding-top: 0;
@@ -384,7 +408,6 @@ footer p {
         font-size: 0.75rem;
     }
 
-    /* Mobile Navigation: Compressed space length */
     .nav-bar {
         gap: 4px;
         padding: 6px 4px;
@@ -405,11 +428,10 @@ footer p {
     }
 
     .table-container {
-        font-size: 0.8rem; /* Shrinks slightly without losing readability */
+        font-size: 0.8rem;
     }
 }
 
-/* Password Field Eye Icon Toggle Styling */
 .password-wrapper {
     position: relative;
     display: flex;
@@ -417,7 +439,7 @@ footer p {
 }
 
 .password-wrapper input {
-    padding-right: 42px; /* Leaves space for the eye icon inside the box */
+    padding-right: 42px;
 }
 
 .toggle-password-icon {
@@ -432,4 +454,11 @@ footer p {
 
 .toggle-password-icon:hover {
     color: var(--secondary-color);
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    background-color: #E0E0E0;
+    margin: 20px 0;
 }

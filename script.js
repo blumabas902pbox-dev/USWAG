@@ -1,8 +1,5 @@
-// script.js - USWAG SLP Interactive Functions & Modal Logic
+// script.js - USWAG SLP Interactive Functions & Strict Modal Validation
 
-/**
- * Requirement 4: One-time Welcome Alert Notification using localStorage
- */
 function showWelcomeAlert() {
     const isAcknowledged = localStorage.getItem('uswag_welcome_acknowledged');
     const modal = document.getElementById('welcomeAlertModal');
@@ -20,9 +17,6 @@ function dismissModal() {
     }
 }
 
-/**
- * Role Selection Pop-up Modal Controls
- */
 function closeRoleModal() {
     const roleModal = document.getElementById('roleModal');
     if (roleModal) {
@@ -30,9 +24,6 @@ function closeRoleModal() {
     }
 }
 
-/**
- * Warning Modal Controls
- */
 function closeWarningModal() {
     const warningModal = document.getElementById('warningModal');
     if (warningModal) {
@@ -40,38 +31,27 @@ function closeWarningModal() {
     }
 }
 
-/**
- * Requirement 7: Trigger Confetti Burst Animation
- * Updated to dynamically originate from the success icon
- */
 function triggerConfettiBurst() {
     if (typeof confetti === 'function') {
-        // Target the success icon wrapper
         const successIcon = document.querySelector('.success-icon-wrapper');
-        
-        // Default fallback origin
         let originParams = { x: 0.5, y: 0.6 }; 
 
         if (successIcon) {
-            // Get the exact dimensions and position of the icon on the current screen
             const rect = successIcon.getBoundingClientRect();
-            
-            // Calculate the center point as a percentage of the viewport (0.0 to 1.0)
             originParams = {
-                x: (rect.left + (rect.width / 2)) / window.innerWidth,
+                x: (rect.left + (rect.width / 2)) / window.innerHeight,
                 y: (rect.top + (rect.height / 2)) / window.innerHeight
             };
         }
 
         confetti({
-            particleCount: 120,
-            spread: 70,
+            particleCount: 250,
+            spread: 100,
             origin: originParams
         });
     }
 }
 
-// Single Consolidated DOM Initialization Block (Fixes UI Glitches & Lag)
 document.addEventListener("DOMContentLoaded", function() {
     
     // --- 1. Role Selection Modal Logic ---
@@ -91,7 +71,10 @@ document.addEventListener("DOMContentLoaded", function() {
         option.addEventListener('click', function() {
             const selectedRole = this.getAttribute('data-role');
             if (roleInput) roleInput.value = selectedRole;
-            if (roleDisplay) roleDisplay.value = selectedRole;
+            if (roleDisplay) {
+                roleDisplay.value = selectedRole;
+                roleDisplay.classList.remove('input-error'); // Clear red error when role selected
+            }
             closeRoleModal();
         });
     });
@@ -109,55 +92,95 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // --- 3. Form Validation & Async Submission (Fixes PHP Download Glitch) ---
+    // --- 3. Form Validation & Async Submission ---
     const regForm = document.getElementById('regForm');
     const submitBtn = document.getElementById('submitBtn');
     const contactInput = document.getElementById('contact_number');
+    const usernameInput = document.getElementById('username');
 
     if (regForm) {
-        regForm.addEventListener('submit', function(e) {
-            e.preventDefault(); // Prevents browser file download on local preview servers
-
-            let isValid = true;
-            const contactVal = contactInput ? contactInput.value.trim() : '';
-            
-            // Validate 11-digit Philippine contact number
-            const contactRegex = /^\d{11}$/;
-            if (!contactRegex.test(contactVal)) {
-                const warningModal = document.getElementById('warningModal');
-                const warningMessage = document.getElementById('warningMessage');
-                
-                if (warningModal && warningMessage) {
-                    warningMessage.innerText = "Please enter a valid 11-digit cellphone number (e.g., 09222555100).";
-                    warningModal.style.display = 'flex';
-                } else {
-                    // Fallback 
-                    alert("Please enter a valid 11-digit cellphone number (e.g., 09222555100).");
-                }
-                isValid = false;
-            }
-
-
-            // Check required inputs
-            const requiredInputs = regForm.querySelectorAll('[required]');
-            requiredInputs.forEach(input => {
-                if (!input.value.trim()) {
-                    isValid = false;
+        // Clear red error highlight dynamically as user types
+        const allInputs = regForm.querySelectorAll('input');
+        allInputs.forEach(input => {
+            input.addEventListener('input', function() {
+                this.classList.remove('input-error');
+                if (submitBtn) {
+                    submitBtn.style.backgroundColor = "var(--secondary-color)";
                 }
             });
+        });
 
-            if (!isValid) {
+        regForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const warningModal = document.getElementById('warningModal');
+            const warningMessage = document.getElementById('warningMessage');
+
+            // Helper function to show Oops popup and turn button red
+            function triggerWarning(msg, invalidInputs = []) {
+                invalidInputs.forEach(input => {
+                    if (input) input.classList.add('input-error');
+                });
+
+                if (warningModal && warningMessage) {
+                    warningMessage.innerText = msg;
+                    warningModal.style.display = 'flex';
+                } else {
+                    alert(msg);
+                }
+
                 if (submitBtn) {
                     submitBtn.style.backgroundColor = "var(--accent-color)";
                     submitBtn.style.color = "#FFFFFF";
                 }
+            }
+
+            // Reset error highlights before validating
+            allInputs.forEach(input => input.classList.remove('input-error'));
+
+            const usernameVal = usernameInput ? usernameInput.value.trim() : '';
+            const contactVal = contactInput ? contactInput.value.trim() : '';
+            const roleVal = roleInput ? roleInput.value.trim() : '';
+            const passwordVal = passwordField ? passwordField.value : '';
+
+            let errors = [];
+            let invalidElements = [];
+
+            // Rule 1: Check Empty Fields (Including System Role)
+            if (!usernameVal) {
+                invalidElements.push(usernameInput);
+            }
+            if (!contactVal) {
+                invalidElements.push(contactInput);
+            }
+            if (!roleVal) {
+                invalidElements.push(roleDisplay);
+            }
+            if (!passwordVal) {
+                invalidElements.push(passwordField);
+            }
+
+            if (!usernameVal || !contactVal || !roleVal || !passwordVal) {
+                triggerWarning("Please fill in all required fields and select a System Role.", invalidElements);
                 return;
             }
 
-            // Prepare form payload
+            // Rule 2: Strictly 11 Digits for Contact Number
+            const contactRegex = /^\d{11}$/;
+            if (!contactRegex.test(contactVal)) {
+                triggerWarning("Contact number must strictly be exactly 11 digits (e.g., 09071128654).", [contactInput]);
+                return;
+            }
+
+            // Rule 3: Strictly At Least 8 Characters for Password
+            if (passwordVal.length < 8) {
+                triggerWarning("Account password must strictly be at least 8 characters long.", [passwordField]);
+                return;
+            }
+
+            // If all validation passes, proceed with form submission
             const formData = new FormData(regForm);
 
-            // Send registration data to PHP script asynchronously
             fetch('process_register.php', {
                 method: 'POST',
                 headers: {
@@ -166,27 +189,16 @@ document.addEventListener("DOMContentLoaded", function() {
                 body: formData
             })
             .then(response => {
-                // Instantly navigate to thank you page
                 window.location.href = 'thankyou.html';
             })
             .catch(error => {
-                // Smooth fallback redirect to thank you page
                 window.location.href = 'thankyou.html';
             });
         });
-
-        // Reset submit button color when user types
-        regForm.addEventListener('input', function() {
-            if (submitBtn) {
-                submitBtn.style.backgroundColor = "var(--secondary-color)";
-            }
-        });
     }
 
-    // Trigger confetti if URL parameter contains success flag
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('registered') === 'success') {
-        // Small delay ensures the DOM is fully rendered before calculating coordinates
         setTimeout(triggerConfettiBurst, 150); 
     }
 });
