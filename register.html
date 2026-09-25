@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - USWAG</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+
+<div class="fixed-header-wrapper">
+    <header class="site-header">
+        <div class="header-logo-left">
+            <img src="logo.png" alt="Barangay Aniog Seal">
+        </div>
+        <div class="header-center">
+            <h1>USWAG SLP System</h1>
+            <p>Unified System for Work and Growth</p>
+        </div>
+        <div class="header-logo-right">
+            <img src="SLP.png" alt="Sustainable Livelihood Program Logo">
+        </div>
+    </header>
+
+    <nav class="nav-bar">
+        <a href="index.html">Home</a>
+        <a href="portfolio.html">Products</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="register.html" class="active">Register</a>
+    </nav>
+</div>
+
+<div class="container">
+    <h2>Create Your Account</h2>
+    <p>Join the USWAG SLP Samahan ng Masisinop community to start tracking your products, recording sales, or sourcing local goods from Barangay Aniog.</p>
+
+        <div class="reg-grid">
+          
+        <!-- Registration Form submitting to process_register.php -->
+        <div class="card-box">
+            <form id="regForm" action="process_register.php" method="POST">
+                <div class="form-group">
+                    <label for="username">Full Name:</label>
+                    <input type="text" id="username" name="username" placeholder="e.g. Juan Dela Cruz" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="contact_number">Contact Number:</label>
+                    <input type="text" id="contact_number" name="contact_number" placeholder="09071128654" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="roleDisplay">System Role:</label>
+                    <input type="text" id="roleDisplay" class="clickable-input" placeholder="Click to select system role..." readonly required>
+                    <input type="hidden" id="role" name="role" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password-field">Account Password:</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="password-field" name="password" placeholder="Enter a strong password" required>
+                        <i class="fa-solid fa-eye toggle-password-icon" id="togglePassword"></i>
+                    </div>
+                </div>
+                
+                <button type="submit" id="submitBtn" class="btn-submit">
+                    <i class="fa-solid fa-user-plus"></i> Submit Registration
+                </button>
+            </form>
+        </div>
+  
+        <!-- Visual Guide Card -->
+        <div class="card-box media-card">
+            <h3 style="text-align: center;">Need Help Creating an Account?</h3>
+            <p>Watch this 1-minute video tutorial to see how to register as a local Seller or Buyer.</p>
+            <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=600&q=80" alt="Registration Guide" style="height: 180px;">
+        </div>
+
+    </div>
+</div>
+
+<!-- Role Selection Pop-up Modal -->
+<div id="roleModal" class="custom-modal-overlay">
+    <div class="custom-modal-box">
+        <h3 style="color: var(--primary-color); margin-bottom: 10px;">Select System Role</h3>
+        <p style="margin-bottom: 20px; font-size: 0.9rem;">Please choose your account type:</p>
+        
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+            <button type="button" class="btn-submit role-option" data-role="Buyer">Buyer</button>
+            <button type="button" class="btn-submit role-option" data-role="Seller">Seller</button>
+        </div>
+        
+        <button type="button" onclick="closeRoleModal()" class="btn-submit" style="background-color: var(--accent-color); margin-top: 15px;">Cancel</button>
+    </div>
+</div>
+
+<!-- Warning/Error Pop-up Modal -->
+<div id="warningModal" class="custom-modal-overlay">
+    <div class="custom-modal-box">
+        <!-- Reusing your existing pulse animation for the icon -->
+        <div style="font-size: 3.5rem; color: var(--accent-color); margin-bottom: 10px; animation: pulseCheck 0.6s ease-in-out;">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+        </div>
+        <h3 style="color: var(--accent-color); margin-bottom: 10px;">Oops!</h3>
+        <p id="warningMessage" style="margin-bottom: 20px; font-size: 0.9rem; text-align: center;">
+            <!-- Dynamic error text will be injected here -->
+        </p>
+        
+        <button type="button" onclick="closeWarningModal()" class="btn-submit" style="background-color: var(--accent-color);">
+            Try Again
+        </button>
+    </div>
+</div>
+  
+<footer>
+    <p>2026 © USWAG SLP - Samahan ng Masisinop, Brgy. Aniog.</p>
+</footer>
+
+</body>
+</html>

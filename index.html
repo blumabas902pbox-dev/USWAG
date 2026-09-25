@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>USWAG - Home</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
+</head>
+<body onload="showWelcomeAlert()">
+
+<div class="fixed-header-wrapper">
+    <header class="site-header">
+        <div class="header-logo-left">
+            <img src="logo.png" alt="Barangay Aniog Seal">
+        </div>
+        <div class="header-center">
+            <h1>USWAG SLP System</h1>
+            <p>Unified System for Work and Growth</p>
+        </div>
+        <div class="header-logo-right">
+            <img src="SLP.png" alt="Sustainable Livelihood Program Logo">
+        </div>
+    </header>
+
+    <nav class="nav-bar">
+        <a href="index.html" class="active">Home</a>
+        <a href="portfolio.html">Products</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="register.html">Register</a>
+    </nav>
+</div>
+
+<div class="container">
+    <div class="card-box">
+        <h2>Welcome to USWAG Livelihood Tracker</h2>
+        <p>USWAG is a community system designed to make business easier. We help local producers in Barangay Aniog track their goods, record sales, and monitor their income effortlessly.</p>
+    </div>
+
+    <div class="table-container">
+        <table class="feature-table">
+            <thead>
+                <tr>
+                    <th><b>Manage Your Products</b></th>
+                    <th><b>Work Anywhere</b></th>
+                    <th><b>Track Your Earnings</b></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Easily check and update your current stock of agricultural, handicraft, and raw materials.</td>
+                    <td>Keep recording your sales even without an internet connection. The system will automatically update your records once you're back online.</td>
+                    <td>Clearly see your starting capital, everyday business expenses, and total profits.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Welcome Notification Modal (Appears once per browser session via localStorage) -->
+<div id="welcomeAlertModal" class="custom-modal-overlay">
+    <div class="custom-modal-box">
+        <div class="success-icon-wrapper">
+            <i class="fa-solid fa-hands-holding-child"></i>
+        </div>
+        <h3 style="color: var(--primary-color);">Welcome to Samahan ng Masisinop Webpage!</h3>
+        <p style="text-align: center; margin: 15px 0;">This platform is powered by USWAG (Unified System for Work and Growth). We are here to support our local farmers, micro-entrepreneurs, and the community of Barangay Aniog by bringing buyers and sellers together in one easy-to-use digital space.</p>
+        <button onclick="dismissModal()" class="btn-submit">Acknowledged</button>
+    </div>
+</div>
+
+<footer>
+    <p>2026 © USWAG SLP - Samahan ng Masisinop, Brgy. Aniog.</p>
+</footer>
+
+</body>
+</html>
