@@ -31,22 +31,47 @@ function closeWarningModal() {
     }
 }
 
+// Function to prevent weak passwords
+function isWeakPassword(password) {
+    const lowerPwd = password.toLowerCase();
+    
+    // Exact matches for extremely common passwords
+    const commonWeak = ['password', '12345678', '123456789', 'qwertyui', 'qwertyuiop', 'admin123', '11111111', '12341234'];
+    if (commonWeak.includes(lowerPwd)) return true;
+    
+    // Check for sequential numbers (e.g., 1234, 9876)
+    if (/(0123|1234|2345|3456|4567|5678|6789|9876|8765|7654|6543|5432|4321|3210)/.test(lowerPwd)) return true;
+    
+    // Check for repeated identical characters (e.g., aaaaaaaa, 88888888)
+    if (/^(.)\1+$/.test(password)) return true;
+
+    // Check for sequential keyboard letters
+    if (/(qwer|asdf|zxcv|abcd|1q2w)/.test(lowerPwd)) return true;
+
+    return false;
+}
+
 function triggerConfettiBurst() {
     if (typeof confetti === 'function') {
         const successIcon = document.querySelector('.success-icon-wrapper');
-        let originParams = { x: 0.5, y: 0.6 }; 
+        let originParams = { x: 0.5, y: 0.5 }; // Default center of page
 
         if (successIcon) {
             const rect = successIcon.getBoundingClientRect();
+            // Fixed: use window.innerWidth for X and window.innerHeight for Y
             originParams = {
-                x: (rect.left + (rect.width / 2)) / window.innerHeight,
+                x: (rect.left + (rect.width / 2)) / window.innerWidth,
                 y: (rect.top + (rect.height / 2)) / window.innerHeight
             };
         }
 
+        // Updated parameters for a perfect circle scattering effect
         confetti({
-            particleCount: 250,
-            spread: 100,
+            particleCount: 350,
+            spread: 360,           // 360 makes it a full circle
+            startVelocity: 35,     // Pushes them outwards nicely
+            gravity: 0.6,          // Floats down a bit slower
+            ticks: 250,
             origin: originParams
         });
     }
@@ -95,8 +120,9 @@ document.addEventListener("DOMContentLoaded", function() {
     // --- 3. Form Validation & Async Submission ---
     const regForm = document.getElementById('regForm');
     const submitBtn = document.getElementById('submitBtn');
-    const contactInput = document.getElementById('contact_number');
     const usernameInput = document.getElementById('username');
+    const addressInput = document.getElementById('address'); // Added missing DOM target
+    const contactInput = document.getElementById('contact_number');
 
     if (regForm) {
         // Clear red error highlight dynamically as user types
@@ -138,29 +164,23 @@ document.addEventListener("DOMContentLoaded", function() {
             // Reset error highlights before validating
             allInputs.forEach(input => input.classList.remove('input-error'));
 
+            // Safely get all values (now properly trimming inputs including 'ñ' gracefully)
             const usernameVal = usernameInput ? usernameInput.value.trim() : '';
+            const addressVal = addressInput ? addressInput.value.trim() : '';
             const contactVal = contactInput ? contactInput.value.trim() : '';
             const roleVal = roleInput ? roleInput.value.trim() : '';
-            const passwordVal = passwordField ? passwordField.value : '';
+            const passwordVal = passwordField ? passwordField.value : ''; // Do not trim password
 
-            let errors = [];
             let invalidElements = [];
 
             // Rule 1: Check Empty Fields (Including System Role)
-            if (!usernameVal) {
-                invalidElements.push(usernameInput);
-            }
-            if (!contactVal) {
-                invalidElements.push(contactInput);
-            }
-            if (!roleVal) {
-                invalidElements.push(roleDisplay);
-            }
-            if (!passwordVal) {
-                invalidElements.push(passwordField);
-            }
+            if (!usernameVal) invalidElements.push(usernameInput);
+            if (!addressVal) invalidElements.push(addressInput);
+            if (!contactVal) invalidElements.push(contactInput);
+            if (!roleVal) invalidElements.push(roleDisplay);
+            if (!passwordVal) invalidElements.push(passwordField);
 
-            if (!usernameVal || !contactVal || !roleVal || !passwordVal) {
+            if (!usernameVal || !addressVal || !contactVal || !roleVal || !passwordVal) {
                 triggerWarning("Please fill in all required fields and select a System Role.", invalidElements);
                 return;
             }
@@ -178,6 +198,12 @@ document.addEventListener("DOMContentLoaded", function() {
                 return;
             }
 
+            // Rule 4: Prevent Weak Password Combinations
+            if (isWeakPassword(passwordVal)) {
+                triggerWarning("Your password is too weak. Please avoid common combinations (like '1234'), repeated characters, or simple words.", [passwordField]);
+                return;
+            }
+
             // If all validation passes, proceed with form submission
             const formData = new FormData(regForm);
 
@@ -192,11 +218,13 @@ document.addEventListener("DOMContentLoaded", function() {
                 window.location.href = 'thankyou.html';
             })
             .catch(error => {
+                // Failsafe trigger (if process_register.php doesn't exist yet, it still goes to thank you)
                 window.location.href = 'thankyou.html';
             });
         });
     }
 
+    // Checking successful redirect
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('registered') === 'success') {
         setTimeout(triggerConfettiBurst, 150); 
